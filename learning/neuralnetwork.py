@@ -33,9 +33,11 @@ class AutoEncoder(nn.Module):
         return decoded
 
 
-def train(lr: float, train_data: np.ndarray, val_data: np.ndarray, epochs: int, batch_size: int):
+def train(model: AutoEncoder, lr: float, train_data: np.ndarray, val_data: np.ndarray, epochs: int,
+          batch_size: int):
     """
     Train the autoencoder
+    :param model: the autoencoder model
     :param lr:
     :param train_data:
     :param val_data:
@@ -43,7 +45,53 @@ def train(lr: float, train_data: np.ndarray, val_data: np.ndarray, epochs: int, 
     :param batch_size:
     :return:
     """
-
+    model.train()
+    # user Adam optimizer
+    optimizer = optim.Adam(model.parameters(), lr=lr)
+    # use Binary Cross Entropy loss
+    criterion = nn.BCELoss()
+    # convert the data to torch tensors
+    train_data = torch.from_numpy(train_data).float()
+    val_data = torch.from_numpy(val_data).float()
+    # create a data loader
+    train_loader = torch.utils.data.DataLoader(train_data, batch_size=batch_size, shuffle=True)
+    val_loader = torch.utils.data.DataLoader(val_data, batch_size=batch_size, shuffle=True)
+    # keep track of the loss
+    train_loss = []
+    val_loss = []
+    for epoch in range(epochs):
+        # keep track of the loss
+        running_loss = 0.0
+        # train the model
+        for i, data in enumerate(train_loader, 0):
+            # get the inputs
+            inputs = data
+            # wrap them in Variable
+            inputs = Variable(inputs)
+            # zero the parameter gradients
+            optimizer.zero_grad()
+            # forward + backward + optimize
+            outputs = model(inputs)
+            loss = criterion(outputs, inputs)
+            loss.backward()
+            optimizer.step()
+            # print statistics
+            running_loss += loss.data[0]
+        train_loss.append(running_loss / len(train_loader))
+        # validate the model
+        running_loss = 0.0
+        for i, data in enumerate(val_loader, 0):
+            # get the inputs
+            inputs = data
+            # wrap them in Variable
+            inputs = Variable(inputs)
+            # forward + backward + optimize
+            outputs = model(inputs)
+            loss = criterion(outputs, inputs)
+            # print statistics
+            running_loss += loss.data[0]
+        val_loss.append(running_loss / len(val_loader))
+        print("Epoch: {}, Train Loss: {}, Validation Loss: {}".format(epoch, train_loss[-1], val_loss[-1]))
 
 
 
