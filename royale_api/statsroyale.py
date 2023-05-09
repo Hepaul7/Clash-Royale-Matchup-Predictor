@@ -1,18 +1,19 @@
 from typing import Optional, List
-
 import requests
+import json
 
-API_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExL" \
-            "TJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwa" \
-            "SIsImp0aSI6IjdlM2JiNTU1LTE5NDItNDYwMi05ZDc5LWY5YjY4ZGYxYmFkYSIsImlhdCI6MTY4Mz" \
-            "I0ODYyMywic3ViIjoiZGV2ZWxvcGVyL2UwZmM5ZjgxLWQzZDgtZGI3OS1lYzY1LTNiZDg4MTRlZmN" \
-            "iMCIsInNjb3BlcyI6WyJyb3lhbGUiXSwibGltaXRzIjpbeyJ0aWVyIjoiZGV2ZWxvcGVyL3NpbHZl" \
-            "ciIsInR5cGUiOiJ0aHJvdHRsaW5nIn0seyJjaWRycyI6WyIxNTguMTgxLjEyMy4xNiJdLCJ0eXBlI" \
-            "joiY2xpZW50In1dfQ.bRVwGGSEmS5PzWjFPXbuDSGaAuyQtYl1noZ5yhOhQC5SXZuEu6HwW32Nz8" \
-            "brR2JbR9GOkaGztjyD4ZKBAeQtpw"
+with open('config.json') as f:
+    config = json.load(f)
+
+API_TOKEN = config['API_TOKEN']
+API_URL = config['API_URL']
 
 
 def fetch_player(player_tag: str) -> Optional[dict]:
+    """ Fetch player data from the Clash Royale API
+    :param player_tag: the player tag
+    :return: a dict containing the player data
+    """
     url = f"https://api.clashroyale.com/v1/players/%23{player_tag}"
 
     headers = {
@@ -31,24 +32,40 @@ def fetch_player(player_tag: str) -> Optional[dict]:
 
 
 def get_player_name(player_tag: str) -> str:
+    """ Get the player name from the player tag
+    :param player_tag: the player tag
+    :return: the player name
+    """
     response = fetch_player(player_tag)
     if response is not None:
         return response["name"]
 
 
 def get_player_pb(player_tag: str) -> int:
+    """ Get the player personal best from the player tag
+    :param player_tag: the player tag
+    :return: the player personal best
+    """
     response = fetch_player(player_tag)
     if response is not None:
         return response["bestTrophies"]
 
 
 def get_player_best_rank(player_tag: str) -> int:
+    """ Get the player best rank from the player tag
+    :param player_tag: the player tag
+    :return: the player best rank
+    """
     response = fetch_player(player_tag)
     if response is not None:
         return response["leagueStatistics"]["bestSeason"]["rank"]
 
 
 def get_battle_logs(player_tag: str) -> Optional[List[dict]]:
+    """ Get the player battle logs from the player tag
+    :param player_tag: the player tag
+    :return: a list of dicts containing the player battle logs
+    """
     url = f"https://api.clashroyale.com/v1/players/%23{player_tag}/battlelog"
     headers = {
         "Authorization": f"Bearer {API_TOKEN}"
@@ -59,26 +76,47 @@ def get_battle_logs(player_tag: str) -> Optional[List[dict]]:
         return None
 
 
-def get_league_seasons() -> List[str]:
+def get_league_seasons() -> Optional[List[str]]:
+    """ Get the league seasons
+    :return: a list of dicts containing the league seasons
+    """
     url = "https://api.clashroyale.com/v1/locations/global/seasons"
     headers = {
         "Authorization": f"Bearer {API_TOKEN}"
     }
-    return requests.get(url, headers=headers).json()
+    if requests.get(url, headers=headers).status_code == 200:
+        return requests.get(url, headers=headers).json()["items"]
+    else:
+        return None
 
 
-def get_season_ranking(identifier: str) -> List[str]:
+def get_season_ranking(identifier: str) -> Optional[List[str]]:
+    """ Get the season ranking
+    :param identifier: the season identifier
+    :return: a list of dicts containing the season ranking
+    """
     url = f"https://api.clashroyale.com/v1/locations/global/seasons/{identifier}/rankings/players"
     headers = {
         "Authorization": f"Bearer {API_TOKEN}"
     }
-    return requests.get(url, headers=headers).json()
+    if requests.get(url, headers=headers).status_code == 200:
+        return requests.get(url, headers=headers).json()
+    else:
+        return None
 
 
 def get_all_cards():
+    """ Get all the cards
+    :return: a list of dicts containing all the cards
+    """
     url = "https://api.clashroyale.com/v1/cards"
     headers = {
         "Authorization": f"Bearer {API_TOKEN}"
     }
     result = requests.get(url, headers=headers).json()
-    return result["items"]
+    if result is not None:
+        return result["items"]
+    else:
+        return None
+
+
