@@ -33,7 +33,7 @@ From there, I collected three information.
 - Opponent Deck
 - Outcome of the match (WIN or DEFEAT for player)
 
-Then, I stored the results into a csv file, there are approximately 80,000 entries.
+Then, I stored the results into a csv file, there are approximately 134,354 entries.
 
 ### Cleaning:
 I did not consider any battles of the player that were not 1v1 pathOfLegend type.
