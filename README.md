@@ -1,5 +1,5 @@
 # Clash Royale Matchup Predictor
-NOTE: THIS PROJECT IS STILL IN PROGRESS
+NOTE: THIS PROJECT IS STILL IN PROGRESS \
 I am making this project on my own, for fun. Especially since I loved this game when I was younger.
 
 
@@ -22,7 +22,7 @@ There are a few assumptions I am making:
 
 
 ## Data Collection:
-Since I haven't found any data publically online I decided to generate my own data.
+Since I haven't found any data publicly online I decided to generate my own data.
 I generated my own API Token from Clash Royale: https://developer.clashroyale.com/#/
 
 I couldn't find specific league season history for recent months, hence I am using 2022-08, the latest history of top 10,000
@@ -32,6 +32,6 @@ From there, I collected three information.
 - Opponent Deck
 - Outcome of the match (WIN or DEFEAT for player)
 
-Then, I stored the results into a csv file, there are approximatley 80,000 entries.
+Then, I stored the results into a csv file, there are approximately 80,000 entries.
 
 

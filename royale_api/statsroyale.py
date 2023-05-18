@@ -7,6 +7,7 @@ with open('config.json') as f:
 
 API_TOKEN = config['API_TOKEN']
 
+
 def fetch_player(player_tag: str) -> Optional[dict]:
     """ Fetch player data from the Clash Royale API
     :param player_tag: the player tag
@@ -22,14 +23,10 @@ def fetch_player(player_tag: str) -> Optional[dict]:
     if response.status_code == 200:
         return response.json()
     else:
-        # print the error message
-        print(response.json()["message"])
-        # print error code
-        print(response.status_code)
         return None
 
 
-def get_player_name(player_tag: str) -> str:
+def get_player_name(player_tag: str) -> Optional[str]:
     """ Get the player name from the player tag
     :param player_tag: the player tag
     :return: the player name
@@ -37,9 +34,11 @@ def get_player_name(player_tag: str) -> str:
     response = fetch_player(player_tag)
     if response is not None:
         return response["name"]
+    else:
+        return None
 
 
-def get_player_pb(player_tag: str) -> int:
+def get_player_pb(player_tag: str) -> Optional[int]:
     """ Get the player personal best from the player tag
     :param player_tag: the player tag
     :return: the player personal best
@@ -47,9 +46,11 @@ def get_player_pb(player_tag: str) -> int:
     response = fetch_player(player_tag)
     if response is not None:
         return response["bestTrophies"]
+    else:
+        return None
 
 
-def get_player_best_rank(player_tag: str) -> int:
+def get_player_best_rank(player_tag: str) -> Optional[int]:
     """ Get the player best rank from the player tag
     :param player_tag: the player tag
     :return: the player best rank
@@ -57,6 +58,8 @@ def get_player_best_rank(player_tag: str) -> int:
     response = fetch_player(player_tag)
     if response is not None:
         return response["leagueStatistics"]["bestSeason"]["rank"]
+    else:
+        return None
 
 
 def get_battle_logs(player_tag: str) -> Optional[List[dict]]:

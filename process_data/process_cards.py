@@ -20,7 +20,7 @@ def load_data(batch: int) -> np.ndarray:
     Vectorize the data,  if there are 109 cards in the game, the input vector would have 219 indices
     (0 to 218), where from 0 to 108 represents vectors of the first player, 109 to 217 represents
     vectors of second player and 218 represents the outcome if the first players deck won
-    :return: train, validation and test sets
+    :return: a ndarray of the data
     """
     vocab = map_cards()
     matrix = np.empty((0, 2 * len(vocab) + 1), int)
@@ -49,6 +49,5 @@ def load_data(batch: int) -> np.ndarray:
             vector = np.concatenate((blue_vector, red_vector))
             vector = np.append(vector, label)
             matrix = np.append(matrix, [vector], axis=0)
-            # print(vector)
-            # print(matrix.shape)
+
     return matrix
