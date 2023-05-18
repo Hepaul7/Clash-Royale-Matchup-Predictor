@@ -22,6 +22,7 @@ There are a few assumptions I am making:
 
 
 ## Data Collection:
+### Collecting:
 Since I haven't found any data publicly online I decided to generate my own data.
 I generated my own API Token from Clash Royale: https://developer.clashroyale.com/#/
 
@@ -34,4 +35,21 @@ From there, I collected three information.
 
 Then, I stored the results into a csv file, there are approximately 80,000 entries.
 
+### Cleaning:
+I did not consider any battles of the player that were not 1v1 pathOfLegend type.
+pathOfLegend is the new "ranked" mode. This is to ensure consistency, where other modes
+player could player for "fun", causing many outliers. 
+
+
+### Imbalanced Data:
+The data is imbalanced, where there are more wins than losses.
+Therefore, I modified the loss function to take class-imbalance into account.
+The cost_sensitive function has an addition constant c+ and c- where c+, c- > 0 to
+control tradeoff. 
+
+I am also considering upsampling /downsampling.
+
+## Learning:
+### Models:
+#### Neural Network:
 
