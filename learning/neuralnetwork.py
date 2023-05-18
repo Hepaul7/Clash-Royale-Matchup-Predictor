@@ -5,38 +5,10 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 import torch.utils.data
-import numpy as np
 import torch
-
-from sklearn.model_selection import train_test_split
+from matrix_loader import *
 
 NUM_CARDS = 109
-
-
-def load_matrix() -> np.ndarray:
-    """Load the saved matrix of labeled data
-    return: the matrix of labeled data
-    """
-    return np.load("matrix.npy")
-
-
-def split_data(matrix: np.ndarray) -> (np.ndarray, np.ndarray, np.ndarray):
-    """Split the data into train, validation and test sets
-    :param matrix: the matrix of labeled data
-    :return: train, validation and test sets
-    """
-    # split the data into train, validation and test sets
-    train, test = train_test_split(matrix, train_size=0.7)
-    test, validation = train_test_split(train, test_size=0.5)
-    return train, validation, test
-
-
-def ndarray_tensor(matrix: np.ndarray) -> torch.Tensor:
-    """Convert a numpy ndarray to a torch Tensor
-    :param matrix: the numpy ndarray
-    :return: the torch Tensor
-    """
-    return torch.from_numpy(matrix).float()  # convert to float tensor
 
 
 class Net(nn.Module):
@@ -76,18 +48,18 @@ def train_model(model: Net, data: torch.Tensor, epochs: int, lr: float, lamb: fl
     optimizer = optim.SGD(model.parameters(), lr=lr)
 
     # train the model
+    num_pos = 0
     for epoch in range(epochs):
         print("Epoch: %d" % (epoch + 1))
         for row in range(num_data):
             # get the inputs
             inputs = Variable(data[row, 0:2 * NUM_CARDS])
             target = Variable(data[row, 2 * NUM_CARDS]).unsqueeze(0)
-
             # zero the parameter gradients
             optimizer.zero_grad()
 
             # forward + backward + optimize
-            outputs = model(inputs)
+            outputs = model(inputs)[-1].unsqueeze(0)
             print(outputs, target)
             loss = criterion(outputs, target) * c_p if target.item() == 1 \
                 else criterion(outputs, target) * c_n
@@ -122,7 +94,7 @@ def evaluate_model(model: Net, data: torch.Tensor) -> float:
         else:
             num_defeat += 1
 
-        prediction = 1 if output[0].item() > 0.5 else 0
+        prediction = 1 if output[0].item() > 0.52 else 0
         if prediction == target.item():
             correct += 1
         else:
@@ -201,8 +173,8 @@ def run() -> None:
     # tune the hyperparameters
     lrs = [0.1, 0.01, 0.001]
     lambs = [0.1, 0.01, 0.001]
-    c_ps = [0.15, 0.25, 0.35]
-    c_ns = [0.85, 0.75, 0.65]
+    c_ps = [1]
+    c_ns = [1.7, 1.75, 1.65]
     nums_epochs = [10, 20, 30]
 
     f_lr, f_lamb, f_c_p, f_c_n, f_best_num_epochs, model = tune_hyperparameters(
@@ -220,5 +192,5 @@ validation = ndarray_tensor(validation)
 test = ndarray_tensor(test)
 
 model = Net()
-train_model(model, train, 10, 0.1, 0.1, 0.4, 0.6)
+train_model(model, train, 100, 0.01, 0.01, 1.0, 1.8)
 evaluate_model(model, test)
