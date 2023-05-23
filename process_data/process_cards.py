@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Optional
 import csv
 import numpy as np
 import royale_api.statsroyale as stats
@@ -15,7 +15,7 @@ def map_cards() -> Dict[str, int]:
 
 
 # load the data from the CSV file
-def load_data(batch: int) -> np.ndarray:
+def load_data(batch: Optional[int] = None) -> np.ndarray:
     """ Load the data from the CSV file
     Vectorize the data,  if there are 109 cards in the game, the input vector would have 219 indices
     (0 to 218), where from 0 to 108 represents vectors of the first player, 109 to 217 represents
@@ -23,14 +23,16 @@ def load_data(batch: int) -> np.ndarray:
     :return: a ndarray of the data
     """
     vocab = map_cards()
+    print(vocab)
     matrix = np.empty((0, 2 * len(vocab) + 1), int)
     with open('../data.csv', newline='') as csvfile:
         reader = csv.reader(csvfile)
         # keep track of a matrix of vectors and labels
         curr_batch = 0
         for row in reader:
-            if curr_batch == batch:
-                break
+            if batch is not None:
+                if curr_batch == batch:
+                    break
             curr_batch += 1
             label = 1 if row[0] == "True" else 0
             blue_cards = eval(row[1])

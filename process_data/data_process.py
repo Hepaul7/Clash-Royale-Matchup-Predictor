@@ -3,6 +3,7 @@ import royale_api.statsroyale as stats
 
 SEASON = "2022-08"
 PATH = "../data.csv"
+BATTLE_TYPE = "pathOfLegend"
 
 
 def battle_cleanup(battle: dict):
@@ -29,7 +30,7 @@ def process_data() -> None:
             if log is not None:
                 for battle in log:
                     # check if the battle is a 1v1 battle
-                    if battle["type"] == "pathOfLegend":
+                    if battle["type"] == BATTLE_TYPE:
                         blue_cards, red_cards, winner = battle_cleanup(battle)
                         # write to CSV
                         write.writerow([winner, blue_cards, red_cards])

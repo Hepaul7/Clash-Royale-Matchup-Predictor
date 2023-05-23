@@ -2,10 +2,10 @@ from typing import Optional, List
 import requests
 import json
 
-with open('config.json') as f:
+with open('../config.json') as f:
     config = json.load(f)
 
-API_TOKEN = config['API_TOKEN']
+API_TOKEN = config['api_token']
 
 
 def fetch_player(player_tag: str) -> Optional[dict]:

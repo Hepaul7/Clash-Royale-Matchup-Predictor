@@ -1,13 +1,27 @@
-import numpy as np
 from sklearn.model_selection import train_test_split
 import torch
+from process_data.process_cards import *
+MATRIX_PATH = "../matrix.npy"
 
 
 def load_matrix() -> np.ndarray:
     """Load the saved matrix of labeled data
     return: the matrix of labeled data
     """
-    return np.load("matrix.npy")
+    matrix = np.load(MATRIX_PATH)
+    np.random.shuffle(matrix)
+    return matrix
+
+
+def create_matrix() -> np.ndarray:
+    """Create the matrix of labeled data
+    return: the matrix of labeled data
+    """
+    matrix = load_data()
+    np.shuffle(matrix)
+    # save the matrix
+    np.save(MATRIX_PATH, matrix)
+    return matrix
 
 
 def split_data(matrix: np.ndarray) -> (np.ndarray, np.ndarray, np.ndarray):
