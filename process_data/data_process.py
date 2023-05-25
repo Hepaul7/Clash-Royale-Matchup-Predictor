@@ -7,6 +7,8 @@ BATTLE_TYPE = "pathOfLegend"
 
 
 def battle_cleanup(battle: dict):
+    """ Clean up
+    """
     # get all the cards
     blue_cards = [x["name"] for x in battle["team"][0]["cards"]]
     red_cards = [x["name"] for x in battle["opponent"][0]["cards"]]

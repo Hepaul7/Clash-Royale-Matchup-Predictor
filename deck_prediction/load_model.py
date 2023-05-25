@@ -1,6 +1,6 @@
 import torch
 import os
-from learning.neural_network import run, run_simple, save_model
+from learning.helpers import run, run_simple, save_model
 
 MODEL_PATH = "../model.pth"
 
