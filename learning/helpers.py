@@ -25,9 +25,8 @@ def train_model(model: Net, train: torch.Tensor, valid: torch.Tensor,
     num_data = train.shape[0]
     # print("num_data: ", num_data)
     # define the loss function and optimizer
-    class_weights = torch.tensor([IMBALANCE_RATIO])
 
-    criterion = nn.BCELoss(weight=class_weights)
+    criterion = nn.BCELoss()
 
     # criterion = nn.SoftMarginLoss()
     # optimizer = optim.SGD(model.parameters(), lr=lr)

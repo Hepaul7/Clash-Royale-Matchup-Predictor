@@ -1,5 +1,4 @@
 import torch.nn as nn
-import torch.nn.functional as F
 import torch.utils.data
 from torch.nn import init
 from learning.matrix_loader import *
@@ -15,16 +14,16 @@ class Net(nn.Module):
         """ Initialize the neural network model
         """
         super(Net, self).__init__()
-        self.fc1 = nn.Linear(2 * NUM_CARDS, 1)
-        # self.fc2 = nn.Linear(NUM_CARDS, 1)
+        self.fc1 = nn.Linear(2 * NUM_CARDS, NUM_CARDS)
+        self.fc2 = nn.Linear(NUM_CARDS, 1)
 
         init.xavier_uniform_(self.fc1.weight)
         # self.initialize_weights()
 
     def forward(self, x):
         x = self.fc1(x)
-        # x = torch.relu(x)
-        # x = self.fc2(x)
+        x = torch.sigmoid(x)
+        x = self.fc2(x)
         x = torch.sigmoid(x)
         return x
 
@@ -37,6 +36,6 @@ class Net(nn.Module):
         """
         Get the norm of the weights
         """
-        return torch.norm(self.fc1.weight, 2) ** 2  # + torch.norm(self.fc2.weight) ** 2
+        return torch.norm(self.fc1.weight, 2) ** 2  + torch.norm(self.fc2.weight) ** 2
 
 

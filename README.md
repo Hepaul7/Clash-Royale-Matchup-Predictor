@@ -2,6 +2,13 @@
 NOTE: THIS PROJECT IS STILL IN PROGRESS \
 I am making this project on my own, for fun. Especially since I loved this game when I was younger.
 
+# TODO:
+1. Use more stats as features from players (Based on Clash Royale API's available information)
+   1. Player Challenge Max Wins
+   2. Win Rate (Calculate by getting Wins/BattleCount)
+   3. Best Season Result (Old Trophy League) [Rank]
+2. Fix the neural network
+3. Write my own implementation of NB
 
 ## Overview:
 ### Clash Royale:
@@ -52,4 +59,7 @@ I am also considering upsampling /downsampling.
 ## Learning:
 ### Models:
 #### Neural Network:
+
+
+
 
