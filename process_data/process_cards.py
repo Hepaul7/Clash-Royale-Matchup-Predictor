@@ -14,6 +14,24 @@ def map_cards() -> Dict[str, int]:
     return {card["name"]: i for i, card in enumerate(cards)}
 
 
+# store a hashmap as a dict mapping to another dict
+def create_map() -> Dict[str, Dict[str, int]]:
+    """
+    Create a dict for each of the cards
+    The keys would be the strings of each card
+    The value would be another dict
+    The key of the other dict would be the card name, where the
+    key of the outer dict is not in it.
+    Then for each value in inner dict, it maps to the net win
+    so for example, if a deck contains Knight and their
+    opponent contains Archers, and deck beats Archers deck,
+    Knight[Archers] + 1 and Archers[Knight] - 1
+    """
+    cards = stats.get_all_cards()
+    return {card["name"]: {in_card["name"]: 0 for j, in_card in enumerate(cards)
+                           if in_card["name"] != card["name"]} for i, card in enumerate(cards)}
+
+
 # load the data from the CSV file
 def load_data(batch: Optional[int] = None) -> np.ndarray:
     """ Load the data from the CSV file

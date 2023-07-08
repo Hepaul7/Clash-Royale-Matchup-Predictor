@@ -9,6 +9,9 @@ I am making this project on my own, for fun. Especially since I loved this game 
    3. Best Season Result (Old Trophy League) [Rank]
 2. Fix the neural network
 3. Write my own implementation of NB
+4. Visualization:
+   1. card, good against, plot for each card etc?
+   2. 
 
 ## Overview:
 ### Clash Royale:
