@@ -91,19 +91,19 @@ def get_league_seasons() -> Optional[List[str]]:
         return None
 
 
-def get_season_ranking(identifier: str) -> Optional[List[str]]:
+def get_season_ranking(identifier: str, limit: int) -> Optional[List[str]]:
     """ Get the season ranking
     :param identifier: the season identifier
     :return: a list of dicts containing the season ranking
     """
-    url = f"https://api.clashroyale.com/v1/locations/global/seasons/{identifier}/rankings/players"
+    url = f"https://api.clashroyale.com/v1/locations/global/pathoflegend/{identifier}/rankings/players?limit={limit}"
     headers = {
         "Authorization": f"Bearer {API_TOKEN}"
     }
     if requests.get(url, headers=headers).status_code == 200:
         return requests.get(url, headers=headers).json()
     else:
-        return None
+        print(requests.get(url, headers=headers).status_code)
 
 
 def get_all_cards():
