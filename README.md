@@ -1,7 +1,10 @@
 # Clash Royale Matchup Predictor
 NOTE: THIS PROJECT IS STILL IN PROGRESS \
 I am making this project on my own, for fun. Especially since I loved this game when I was younger.
-
+```
+I'm currently implementing a new way of comparing Matchup
+Please ignore all the code in learning and deck prediction
+```
 # TODO:
 1. Use more stats as features from players (Based on Clash Royale API's available information)
    1. Player Challenge Max Wins
