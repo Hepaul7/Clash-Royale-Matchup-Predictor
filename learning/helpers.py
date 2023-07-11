@@ -164,7 +164,7 @@ def save_model(model: torch.nn) -> None:
 def run() -> torch.nn:
     """Run the program
     """
-    matrix = load_matrix()
+    matrix = load_battle_matrix()
     train, validation, test = split_data(matrix)
 
     # convert the data to torch Tensors
@@ -187,7 +187,7 @@ def run() -> torch.nn:
 
 
 def run_simple():
-    matrix = load_matrix()
+    matrix = load_battle_matrix()
     train, validation, test = split_data(matrix)
 
     # convert the data to torch Tensors

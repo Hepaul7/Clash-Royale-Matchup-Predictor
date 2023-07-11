@@ -1,10 +1,17 @@
 from sklearn.model_selection import train_test_split
 import torch
-from process_data.process_cards import *
-MATRIX_PATH = "../matrix.npy"
+from process_data.data_process import *
 
 
-def load_matrix() -> np.ndarray:
+def load_interaction_matrix() -> np.ndarray:
+    """
+    Load the saved matrix of card interactions
+    """
+    matrix = np.load(INTERACTION_PATH)
+    return matrix
+
+
+def load_battle_matrix() -> np.ndarray:
     """Load the saved matrix of labeled data
     return: the matrix of labeled data
     """
@@ -13,7 +20,7 @@ def load_matrix() -> np.ndarray:
     return matrix
 
 
-def create_matrix() -> np.ndarray:
+def create_battle_matrix() -> np.ndarray:
     """Create the matrix of labeled data
     return: the matrix of labeled data
     """

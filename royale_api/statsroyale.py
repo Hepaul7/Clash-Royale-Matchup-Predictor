@@ -1,3 +1,8 @@
+"""
+This file contains all the code related to the Clash Royale's API.
+The functions are for retrieving the most up-to-date game statistics.
+"""
+
 from typing import Optional, List
 import requests
 import json
@@ -74,7 +79,7 @@ def get_battle_logs(player_tag: str) -> Optional[List[dict]]:
     if requests.get(url, headers=headers).status_code == 200:
         return requests.get(url, headers=headers).json()
     else:
-        return None
+        print(requests.get(url, headers=headers).status_code)
 
 
 def get_league_seasons() -> Optional[List[str]]:
@@ -88,12 +93,13 @@ def get_league_seasons() -> Optional[List[str]]:
     if requests.get(url, headers=headers).status_code == 200:
         return requests.get(url, headers=headers).json()["items"]
     else:
-        return None
+        print(requests.get(url, headers=headers).status_code)
 
 
 def get_season_ranking(identifier: str, limit: int) -> Optional[List[str]]:
     """ Get the season ranking
     :param identifier: the season identifier
+    :param limit: the limit on the amount of ranks returned
     :return: a list of dicts containing the season ranking
     """
     url = f"https://api.clashroyale.com/v1/locations/global/pathoflegend/{identifier}/rankings/players?limit={limit}"
@@ -106,17 +112,17 @@ def get_season_ranking(identifier: str, limit: int) -> Optional[List[str]]:
         print(requests.get(url, headers=headers).status_code)
 
 
-def get_all_cards():
+def get_all_cards() -> Optional[List[str]]:
     """ Get all the cards
-    :return: a list of dicts containing all the cards
+    :return: a list containing all the cards
     """
     url = "https://api.clashroyale.com/v1/cards"
     headers = {
         "Authorization": f"Bearer {API_TOKEN}"
     }
     result = requests.get(url, headers=headers).json()
-    if result is not None:
+    if result.get(url, headers=headers).status_code == 200:
         return result["items"]
     else:
-        return None
+        print(requests.get(url, headers=headers).status_code)
 

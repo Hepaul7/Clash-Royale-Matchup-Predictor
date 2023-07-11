@@ -8,7 +8,7 @@ def load_data() -> (torch.nn, torch.nn, torch.nn):
     Load the data from a saved matrix, split into
     train, validation and test sets (70%, 15%, 15%)
     """
-    matrix = load_matrix()
+    matrix = load_battle_matrix()
     train, validation, test = split_data(matrix)
     train = ndarray_tensor(train)
     validation = ndarray_tensor(validation)
