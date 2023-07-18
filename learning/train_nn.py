@@ -1,12 +1,10 @@
-import torch.nn as nn
+
 import torch.optim as optim
 from torch import Tensor
 from torch.autograd import Variable
 
 from learning.matrix_loader import *
 from learning.interactions_nn import *
-
-NUM_CARDS = 109
 
 
 def train_model(model: CardInteractionNet, train: Tensor, epochs: int, lr: float,

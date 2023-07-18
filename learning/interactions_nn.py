@@ -22,7 +22,7 @@ class CardInteractionNet(nn.Module):
         self.fc3 = nn.Linear(hidden_dim, 1)
 
     def forward(self, input_vectors, interaction_matrix):
-        input_embedded = self.embeddings(input_vectors)
+        input_embedded = self.embeddings(input_vectors.long())
         interactions = interaction_matrix.view(-1, NUM_CARDS * NUM_CARDS)
         interaction_output = self.interaction_layer(interactions)
         combined = torch.cat((input_embedded.view(-1), interaction_output.view(-1)))

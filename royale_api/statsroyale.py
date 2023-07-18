@@ -2,7 +2,6 @@
 This file contains all the code related to the Clash Royale's API.
 The functions are for retrieving the most up-to-date game statistics.
 """
-
 from typing import Optional, List
 import requests
 import json

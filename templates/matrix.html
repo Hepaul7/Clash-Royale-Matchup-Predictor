@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+
+<html>
+<head>
+    <title>Card Interactions</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Card Interactions</h1>
+
+    <table>
+        <tr>
+            <th></th>
+            {% for card in cards %}
+                <th>{{ card }}</th>
+            {% endfor %}
+        </tr>
+        {% for i in range(interactions|length) %}
+            <tr>
+                <th>{{ cards[i] }}</th>
+                {% for j in range(interactions[i]|length) %}
+                    <td>{{ interactions[i][j] }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
