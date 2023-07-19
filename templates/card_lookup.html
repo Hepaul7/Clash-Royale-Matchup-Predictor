@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+<html>
+<head>
+    <title>Individual Card Interactions</title>
+</head>
+
+<body>
+    <a href="/" target="_self" title="returns to home">
+        return home
+    </a>
+    <p>
+        Here, you can view the card interactions for two specific cards you select:
+        The result will be in terms of the first card.
+    </p>
+    <p>
+        NOTE: THIS IS A NOT THE FINAL VERSION, THE DATA IS NOT ACCURATE YET
+    </p>
+    <form action="{{ url_for('lookup') }}" method="POST">
+        <div>
+            <label for="fcard">First card:</label>
+            <select id="fcard" name="fcard" required>
+                {% for card in cards %}
+                    <option value="{{ card }}" {% if fcard == card %}selected{% endif %}>{{ card }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="scard">Second card:</label>
+            <select id="scard" name="scard" required>
+                {% for card in cards %}
+                    <option value="{{ card }}" {% if scard == card %}selected{% endif %}>{{ card }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <br>
+        <div>
+            <input type="submit" value="Submit">
+        </div>
+    </form>
+
+    {% if fcard and scard%}
+    <h2>Result</h2>
+    <p>First Card: {{ fcard }}</p>
+    <p>Second Card: {{ scard }}</p>
+    <p>Result: {{ result }}</p>
+    {% endif %}
+</body>
+</html>

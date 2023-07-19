@@ -120,7 +120,7 @@ def get_all_cards() -> Optional[List[str]]:
         "Authorization": f"Bearer {API_TOKEN}"
     }
     result = requests.get(url, headers=headers).json()
-    if result.get(url, headers=headers).status_code == 200:
+    if result:
         return result["items"]
     else:
         print(requests.get(url, headers=headers).status_code)
