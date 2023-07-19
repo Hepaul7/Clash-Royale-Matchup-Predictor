@@ -1,6 +1,7 @@
 # Clash Royale Matchup Predictor
 NOTE: THIS PROJECT IS STILL IN PROGRESS \
-I am making this project on my own, for fun. Especially since I loved this game when I was younger.
+I am making this project on my own, for fun. Especially since I loved this game as a kid. \\
+I'm also using this as a chance to learn HTML & CSS from scratch \\
 ```
 I'm currently implementing a new way of comparing Matchup
 Please ignore all the code in learning and deck prediction
