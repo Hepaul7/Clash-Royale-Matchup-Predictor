@@ -62,7 +62,8 @@ def get_player_best_rank(player_tag: str) -> Optional[int]:
     """
     response = fetch_player(player_tag)
     if response is not None:
-        return response["leagueStatistics"]["bestSeason"]["rank"]
+        return response["leagueStatistics"]["bestSeason"]["rank"] \
+            if 'rank' in response["leagueStatistics"]["bestSeason"].keys() else 0
     else:
         return None
 
