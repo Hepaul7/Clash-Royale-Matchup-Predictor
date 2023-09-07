@@ -6,16 +6,6 @@ I'm also using this as a chance to learn HTML & CSS from scratch \\
 I'm currently implementing a new way of comparing Matchup
 Please ignore all the code in learning and deck prediction
 ```
-# TODO:
-1. Use more stats as features from players (Based on Clash Royale API's available information)
-   1. Player Challenge Max Wins
-   2. Win Rate (Calculate by getting Wins/BattleCount)
-   3. Best Season Result (Old Trophy League) [Rank]
-2. Fix the neural network
-3. Write my own implementation of NB
-4. Visualization:
-   1. card, good against, plot for each card etc?
-   2. 
 
 ## Overview:
 ### Clash Royale:
@@ -30,9 +20,9 @@ I am building this model to predict the likelihood of one deck beating another d
 
 ### Assumptions:
 There are a few assumptions I am making:
-  - Both players have the same knowledge on the game (eg. card interactions)
-  - Players do not make "stupid" mistakes
-  - There aren't any "broken" cards
+  - ~~Both players have the same knowledge on the game (eg. card interactions)~~ Okay, after some playing around, I have to include the players experience with the game as a factor to consider.
+  - ~~Players do not make "stupid" mistakes~~ Not true, even our training data does not gurantee this
+  - ~~There aren't any "broken" cards~~ With the new update, evolutions, there are very broken cards, and I think they're reflected in the data. (This entire point kinda makes the game not fair)
 
 
 ## Data Collection:
@@ -49,24 +39,24 @@ From there, I collected three information.
 
 Then, I stored the results into a csv file, there are approximately 80,000 entries.
 
+As of September 7, I have included more info, an entry would look something like this:
+```
+879,11,-2,10,"['Knight', 'Princess', 'Ice Spirit', 'Goblin Gang', 'Tesla', 'Rocket', 'Goblin Barrel', 'The Log']","['Royal Recruits', 'Royal Hogs', 'Arrows', 'Goblin Cage', 'Flying Machine', 'Zappies', 'Fireball', 'Barbarian Barrel']",True
+```
+From left to right:
+```
+delta_pb, delta_max_win, delta_rank, delta_gt, blue_cards, red_cards, won?
+```
+
+Before, the aim was to see if Deck A beats Deck B, now its shifted more, **can player A beat player B, given their history and deck choices**. Of course, if we input the same stats for players, then we will still be looking at "Can Deck A beat deck B?"
+
+
 ### Cleaning:
 I did not consider any battles of the player that were not 1v1 pathOfLegend type.
 pathOfLegend is the new "ranked" mode. This is to ensure consistency, where other modes
 player could player for "fun", causing many outliers. 
 
-
-### Imbalanced Data:
-The data is imbalanced, where there are more wins than losses.
-Therefore, I modified the loss function to take class-imbalance into account.
-The cost_sensitive function has an addition constant c+ and c- where c+, c- > 0 to
-control tradeoff. 
-
-I am also considering upsampling /downsampling.
-
-## Learning:
-### Models:
-#### Neural Network:
-
+### more to come...
 
 
 
