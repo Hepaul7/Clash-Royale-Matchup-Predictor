@@ -1,11 +1,9 @@
 # Clash Royale Matchup Predictor
-NOTE: THIS PROJECT IS STILL IN PROGRESS \
-I am making this project on my own, for fun. Especially since I loved this game as a kid. \\
-I'm also using this as a chance to learn HTML & CSS from scratch \\
-```
-I'm currently implementing a new way of comparing Matchup
-Please ignore all the code in learning and deck prediction
-```
+NOTE: **THIS PROJECT IS STILL IN PROGRESS**  (basically done, but lots of improvements)
+
+I am making this project on my own, for fun (and because I wasted a lot of time on the game in middle school). 
+
+I'm also using this as a chance to learn HTML & CSS from scratch 
 
 ## Overview:
 ### Clash Royale:
@@ -37,7 +35,8 @@ From there, I collected three information.
 - Opponent Deck
 - Outcome of the match (WIN or DEFEAT for player)
 
-Then, I stored the results into a csv file, there are approximately 80,000 entries.
+Then, I stored the results into a csv file, ~~there are approximately 130,000 entries.~~,
+right now, the new version, there are only around 550 entries, as it takes forever to generate them.
 
 As of September 7, I have included more info, an entry would look something like this:
 ```
@@ -56,7 +55,26 @@ I did not consider any battles of the player that were not 1v1 pathOfLegend type
 pathOfLegend is the new "ranked" mode. This is to ensure consistency, where other modes
 player could player for "fun", causing many outliers. 
 
-### more to come...
+### Learning (so far, lots more to do as I learn more about ML):
+I wrote a two layer neural network, with input size 20, then input size 8 to the second layer and then finally and output of size 1. 
+Why neural network? Well, maybe I could use a decision tree or random forests (too many parameters and then decision boundary too complex). But the complexity of decks will probably mean overfitting. I played around a bit and found out Probabilistic models performed very poorly.
+Logistic regression had an accuracy around 60%. There are too many complex patterns that I could not see
+, as I learned in my intro ML class, if your reduce any problem into a function, a neural network, in theory
+can solve anything, so I gave it a try. 
 
+**Please note that, I have not tuned any hyperparmeters in this new version yet**
 
+#### Version that failed miserably 
+This is actually my second attempt, at first I had a model that accepts an input size (109 x 2). Basically an encoding of cards
+of both players. I thought about it and I feel like the data, reflected by real players vary in different skills.
+So my assumptions about equal skills, not misplays etc, are all invalid, and caused the model to perform awful.
+I think it was too complex, so it just kept overfitting, sometimes just predicting the same outcome, no matter the input.
+
+So I think, to predict the outcome of a match, the player must be taken account, hence the new version. 
+### Simple version
+Through this simple version (small dataset, random hyperparmeters) I achieved a 72.27% accuracy. 
+So far, its not just predicting the same outcome no matter the input, which is good. I shall - tune hyperparameters and think a bit more
+how to improve this further.
+
+![](Screenshot 2023-09-07 at 23.13.44.png)
 
