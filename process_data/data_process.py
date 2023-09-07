@@ -9,7 +9,7 @@ import royale_api.statsroyale as stats
 
 SEASON = "2023-05"
 MATRIX_PATH = "../matrix.npy"
-PATH = "../data.csv"
+PATH = "../data_updated.csv"
 BATTLE_TYPE = "pathOfLegend"
 INTERACTION_PATH = "../interaction_matrix.npy"
 NUM_CARDS = 109
@@ -100,7 +100,7 @@ def fill_interaction_map() -> Dict[str, Dict[str, int]]:
     note: the code is a bit ugly, ill fix it.
     """
     mapping = create_interaction_map()
-    rankings = stats.get_season_ranking(SEASON, 30)["items"]
+    rankings = stats.get_season_ranking(SEASON, 900)["items"]
     for i in range(1, len(rankings)):
         player = rankings[i]
         tag = player["tag"][1:]
@@ -136,11 +136,19 @@ def interaction_to_matrix() -> np.ndarray:
 
 def process_battle_logs() -> None:
     """ Create a CSV file that stores the battle logs of the top 10000 players in the current season
+
+    update: will this player beat the opponent?
+    input: delta pb (player - opponent),
+    delta gc max wins, delta gt wins,
+    delta best PoL rank: (player - opponent), however,
+    if player unranked, opponent ranked: -10000
+    if player ranked, opponent unranked: 10000
+    delta challenge max wins (player - opponent)
     """
     # loop over players and store their battle logs in a CSV file
     with open(PATH, "a", newline="") as csvfile:
         write = csv.writer(csvfile)
-        rankings = stats.get_season_ranking(SEASON, 9999)["items"]
+        rankings = stats.get_season_ranking(SEASON, 500)["items"]
         for i in range(1, len(rankings)):  # should iterate 9999 times
             player = rankings[i]
             # remove hashtag from player tag
@@ -151,5 +159,36 @@ def process_battle_logs() -> None:
                     # check if the battle is a 1v1 battle
                     if battle["type"] == BATTLE_TYPE:
                         blue_cards, red_cards, winner = battle_cleanup(battle)
+
+                        opponent_tag = battle['opponent'][0]['tag'][1:]
+
+                        player_pb = stats.get_player_pb(tag)
+                        opponent_pb = stats.get_player_pb(opponent_tag)
+
+                        player_max_win = stats.get_max_wins(tag)
+                        opponent_max_win = stats.get_max_wins(opponent_tag)
+
+                        player_best_rank = stats.get_pol_best_rank(tag)
+                        opponent_best_rank = stats.get_pol_best_rank(opponent_tag)
+
+                        player_gt_wins = stats.get_amount_gt(tag)
+                        opponent_gt_wins = stats.get_amount_gt(opponent_tag)
+
+                        delta_pb = player_pb - opponent_pb
+                        delta_max_win = player_max_win - opponent_max_win
+                        if player_best_rank is None and opponent_best_rank is None:
+                            delta_rank = 0
+                        elif player_best_rank is None:
+                            delta_rank = -10000
+                        elif opponent_best_rank is None:
+                            delta_rank = 10000
+                        else:
+                            delta_rank = player_best_rank - opponent_best_rank
+
+                        delta_gt = player_gt_wins - opponent_gt_wins
+
+                        print([delta_pb, delta_max_win, delta_rank,
+                               delta_gt, blue_cards, red_cards, winner])
                         # write to CSV
-                        write.writerow([winner, blue_cards, red_cards])
+                        write.writerow([delta_pb, delta_max_win, delta_rank,
+                                        delta_gt, blue_cards, red_cards, winner])
