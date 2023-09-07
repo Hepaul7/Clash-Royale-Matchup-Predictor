@@ -27,6 +27,7 @@ def fetch_player(player_tag: str) -> Optional[dict]:
     if response.status_code == 200:
         return response.json()
     else:
+        print(f'failed with status code: {response.status_code}')
         return None
 
 
@@ -124,4 +125,54 @@ def get_all_cards() -> Optional[List[str]]:
         return result["items"]
     else:
         print(requests.get(url, headers=headers).status_code)
+
+
+def check_gt_rank(player_tag: str) -> bool:
+    """ Check if the player has ever finished top 1000
+    in the global tournament, return True if yes
+    """
+    response = fetch_player(player_tag)
+    if response is not None:
+        return any(x for x in response['badges'] if x['name'] == 'LadderTournamentTop1000')
+    else:
+        return False
+
+
+def get_amount_gt(player_tag: str) -> int:
+    """ Return the amount of time a player has finished top 1000 in GT"""
+    response = fetch_player(player_tag)
+    if response is not None:
+        gt = [x for x in response['badges'] if x['name'] == 'LadderTournamentTop1000']
+        if len(gt) == 0:
+            return 0
+        else:
+            return gt[0]['level']
+
+
+def get_max_wins(player_tag: str) -> int:
+    """ Return the maximum amount of wins the players got in a challenge"""
+    response = fetch_player(player_tag)
+    if response is not None:
+        return response['challengeMaxWins']
+    else:
+        return 0
+
+
+def get_cards_won(player_tag: str) -> int:
+    """ Return the maximum amount of cards a player has won"""
+    response = fetch_player(player_tag)
+    if response is not None:
+        return response['challengeCardsWon']
+    else:
+        return 0
+
+
+def get_pol_best_rank(player_tag: str) -> int:
+    """ Return the best rank achieved in pathOfLegends"""
+    response = fetch_player(player_tag)
+    if response is not None:
+        rank = response['bestPathOfLegendSeasonResult']['rank']
+        return rank if rank else 0
+    else:
+        return 0
 
