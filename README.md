@@ -76,5 +76,5 @@ Through this simple version (small dataset, random hyperparmeters) I achieved a 
 So far, its not just predicting the same outcome no matter the input, which is good. I shall - tune hyperparameters and think a bit more
 how to improve this further.
 
-![]([Screenshot 2023-09-07 at 23.13.44.png](https://github.com/Hepaul7/Clash-Royale-Matchup-Predictor/blob/master/Screenshot%202023-09-07%20at%2023.13.44.png)https://github.com/Hepaul7/Clash-Royale-Matchup-Predictor/blob/master/Screenshot%202023-09-07%20at%2023.13.44.png)
+![sceenshot](Screenshot 2023-09-07 at 23.13.44.png)
 
