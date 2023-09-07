@@ -28,12 +28,17 @@ There are a few assumptions I am making:
 Since I haven't found any data publicly online I decided to generate my own data.
 I generated my own API Token from Clash Royale: https://developer.clashroyale.com/#/
 
-I couldn't find specific league season history for recent months, hence I am using 2022-08, the latest history of top 10,000
-players. I navigated to the player history (battle). 
-From there, I collected three information. 
+~~I couldn't find specific league season history for recent months, hence I am using 2022-08, the latest history of top 10,000
+players. I navigated to the player history (battle).~~ They updated their API!
+From there, I collected ~~three information.~~ a few information.
 - Player Deck
 - Opponent Deck
 - Outcome of the match (WIN or DEFEAT for player)
+- Player Max Challenge wins, Opponent Max Challenge wins (highest is 20, the higher, the better)
+- Player highest trophy count, opponent highest trophy (with the recent update, this could be misleading)
+- Player Best rank, opponent best rank, (its appended to the input to model as -1 * (player_best_rank - opponent_best_rank))
+- number of player global tournament top 1k ranks, and number of opponents top 1k ranks
+- cards won from challenges
 
 Then, I stored the results into a csv file, ~~there are approximately 130,000 entries.~~,
 right now, the new version, there are only around 550 entries, as it takes forever to generate them.
