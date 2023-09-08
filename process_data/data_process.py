@@ -8,7 +8,7 @@ import numpy as np
 import royale_api.statsroyale as stats
 
 SEASON = "2023-05"
-MATRIX_PATH = "../matrix.npy"
+MATRIX_PATH = "../matrix_updated.npy"
 PATH = "../data_updated.csv"
 BATTLE_TYPE = "pathOfLegend"
 INTERACTION_PATH = "../interaction_matrix.npy"
@@ -48,34 +48,46 @@ def load_data(batch: Optional[int] = None) -> np.ndarray:
     """
     vocab = map_cards()
     print(vocab)
-    matrix = np.empty((0, 2 * len(vocab) + 1), int)
-    with open('../data.csv', newline='') as csvfile:
+    matrix = np.empty((0, 21), int)
+    with open('../data_updated.csv', newline='') as csvfile:
         reader = csv.reader(csvfile)
         # keep track of a matrix of vectors and labels
         curr_batch = 0
         for row in reader:
+            print(row)
             if batch is not None:
                 if curr_batch == batch:
                     break
             curr_batch += 1
-            label = 1 if row[0] == "True" else 0
-            blue_cards = eval(row[1])
-            red_cards = eval(row[2])
+            label = 1 if row[6] == "True" else 0
+            blue_cards = eval(row[4])
+            red_cards = eval(row[5])
 
             # vectorize the cards
-            blue_vector = np.zeros(len(vocab))
-            red_vector = np.zeros(len(vocab))
+            blue_vector = np.zeros(8)
+            red_vector = np.zeros(8)
 
-            for card in blue_cards:
-                blue_vector[vocab[card]] += 1
-            for card in red_cards:
-                red_vector[vocab[card]] += 1
+            for i in range(len(blue_cards)):
+                print(vocab[blue_cards[i]])
+                blue_vector[i] = vocab[blue_cards[i]]
+
+            for i in range(len(red_cards)):
+                red_vector[i] = vocab[red_cards[i]]
 
             # combine vectors and label
-            vector = np.concatenate((blue_vector, red_vector))
-            vector = np.append(vector, label)
-            matrix = np.append(matrix, [vector], axis=0)
+            deltas = np.zeros(4)
+            deltas[0] = int(row[0])
+            deltas[1] = int(row[1])
+            deltas[2] = int(row[2])
+            deltas[3] = int(row[3])
+            print(deltas)
 
+            vector = np.concatenate((blue_vector, red_vector))
+            print(vector)
+            vector = np.append(vector, label)
+            vector = np.append(deltas, vector)
+            matrix = np.append(matrix, [vector], axis=0)
+    print(matrix)
     return matrix
 
 
@@ -148,8 +160,8 @@ def process_battle_logs() -> None:
     # loop over players and store their battle logs in a CSV file
     with open(PATH, "a", newline="") as csvfile:
         write = csv.writer(csvfile)
-        rankings = stats.get_season_ranking(SEASON, 500)["items"]
-        for i in range(1, len(rankings)):  # should iterate 9999 times
+        rankings = stats.get_season_ranking(SEASON, 9999)["items"]
+        for i in range(500, len(rankings)):  # should iterate 9999 times
             player = rankings[i]
             # remove hashtag from player tag
             tag = player["tag"][1:]
@@ -174,16 +186,19 @@ def process_battle_logs() -> None:
                         player_gt_wins = stats.get_amount_gt(tag)
                         opponent_gt_wins = stats.get_amount_gt(opponent_tag)
 
+                        if opponent_pb is None or player_pb is None:
+                            continue
+
                         delta_pb = player_pb - opponent_pb
                         delta_max_win = player_max_win - opponent_max_win
-                        if player_best_rank is None and opponent_best_rank is None:
+                        if player_best_rank == 0 and opponent_best_rank == 0:
                             delta_rank = 0
-                        elif player_best_rank is None:
+                        elif player_best_rank == 0:
                             delta_rank = -10000
-                        elif opponent_best_rank is None:
+                        elif opponent_best_rank == 0:
                             delta_rank = 10000
                         else:
-                            delta_rank = player_best_rank - opponent_best_rank
+                            delta_rank = -1 * (player_best_rank - opponent_best_rank)
 
                         delta_gt = player_gt_wins - opponent_gt_wins
 
@@ -192,3 +207,8 @@ def process_battle_logs() -> None:
                         # write to CSV
                         write.writerow([delta_pb, delta_max_win, delta_rank,
                                         delta_gt, blue_cards, red_cards, winner])
+    csvfile.close()
+
+
+def save_matrix(matrix):
+    np.save(MATRIX_PATH, matrix)

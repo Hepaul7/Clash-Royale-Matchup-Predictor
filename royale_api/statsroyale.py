@@ -148,6 +148,8 @@ def get_amount_gt(player_tag: str) -> int:
             return 0
         else:
             return gt[0]['level']
+    else:
+        return 0
 
 
 def get_max_wins(player_tag: str) -> int:

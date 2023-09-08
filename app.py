@@ -159,5 +159,39 @@ def lookup():
     )
 
 
+@app.route('/deck_comparison.html', methods=['GET', 'POST'])
+def deck_comparison():
+    return render_template('deck_comparison.html')
+    # if request.method == 'POST':
+    #     print(0)
+    #     a1 = request.form['a1']
+    #     a2 = request.form['a2']
+    #     a3 = request.form['a3']
+    #     a4 = request.form['a4']
+    #     a5 = request.form['a5']
+    #     a6 = request.form['a6']
+    #     a7 = request.form['a7']
+    #     a8 = request.form['a8']
+    #
+    #     b1 = request.form['b1']
+    #     b2 = request.form['b2']
+    #     b3 = request.form['b3']
+    #     b4 = request.form['b4']
+    #     b5 = request.form['b5']
+    #     b6 = request.form['b6']
+    #     b7 = request.form['b7']
+    #     b8 = request.form['b8']
+    #     interaction_matrix = np.load('interaction_matrix.npy')
+
+        # cards = [x for x in MAP.keys()]
+        # return render_template(
+        #     "deck_comparison.html",
+        #     cards=cards,
+        #     mapping=MAP,
+        #     a1=a1, a2=a2, a3=a3, a4=a4, a5=a5, a6=a6, a7=a7, a8=a8,
+        #     b1=b1, b2=b2, b3=b3, b4=b4, b5=b5, b6=b6, b7=b7, b8=b8
+        # )
+
+
 if __name__ == '__main__':
     app.run()

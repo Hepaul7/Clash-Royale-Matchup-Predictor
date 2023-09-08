@@ -19,7 +19,7 @@ I am building this model to predict the likelihood of one deck beating another d
 ### Assumptions:
 There are a few assumptions I am making:
   - ~~Both players have the same knowledge on the game (eg. card interactions)~~ Okay, after some playing around, I have to include the players experience with the game as a factor to consider.
-  - ~~Players do not make "stupid" mistakes~~ Not true, even our training data does not gurantee this
+  - ~~Players do not make "stupid" mistakes~~ Not true, even our training data does not guarantee this
   - ~~There aren't any "broken" cards~~ With the new update, evolutions, there are very broken cards, and I think they're reflected in the data. (This entire point kinda makes the game not fair)
 
 
@@ -41,7 +41,7 @@ From there, I collected ~~three information.~~ a few information.
 - cards won from challenges
 
 Then, I stored the results into a csv file, ~~there are approximately 130,000 entries.~~,
-right now, the new version, there are only around 550 entries, as it takes forever to generate them.
+right now, the new version, there are only around 1200 entries.
 
 As of September 7, I have included more info, an entry would look something like this:
 ```

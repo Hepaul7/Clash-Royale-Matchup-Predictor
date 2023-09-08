@@ -75,7 +75,6 @@ def evaluate(model, data):
 
         output = model(inputs)
 
-
         true_labels.append(target.item())
         predicted.append(output.item())
 
@@ -95,6 +94,7 @@ np.random.shuffle(data)
 train, test = train_test_split(data, train_size=0.7)
 train, test = ndarray_tensor(train), ndarray_tensor(test)
 model = Net()
-train_model(model, train, 10, 0.01, 0.01)
+train_model(model, train, 10, 0.1, 0.01)
 
 acc = evaluate(model, test)
+print(acc)
