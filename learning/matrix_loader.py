@@ -16,7 +16,7 @@ def load_battle_matrix() -> np.ndarray:
     return: the matrix of labeled data
     """
     matrix = np.load(MATRIX_PATH)
-    np.random.shuffle(matrix)
+    # np.random.shuffle(matrix)
     return matrix
 
 

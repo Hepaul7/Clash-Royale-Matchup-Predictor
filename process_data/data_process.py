@@ -9,7 +9,7 @@ import royale_api.statsroyale as stats
 
 SEASON = "2023-05"
 MATRIX_PATH = "../matrix_updated.npy"
-PATH = "../data_updated.csv"
+PATH = "../data_updated_2.csv"
 BATTLE_TYPE = "pathOfLegend"
 INTERACTION_PATH = "../interaction_matrix.npy"
 NUM_CARDS = 109
@@ -48,7 +48,7 @@ def load_data(batch: Optional[int] = None) -> np.ndarray:
     """
     vocab = map_cards()
     print(vocab)
-    matrix = np.empty((0, 21), int)
+    matrix = np.empty((0, 20), int)
     with open('../data_updated.csv', newline='') as csvfile:
         reader = csv.reader(csvfile)
         # keep track of a matrix of vectors and labels
@@ -75,17 +75,20 @@ def load_data(batch: Optional[int] = None) -> np.ndarray:
                 red_vector[i] = vocab[red_cards[i]]
 
             # combine vectors and label
-            deltas = np.zeros(4)
-            deltas[0] = int(row[0])
-            deltas[1] = int(row[1])
-            deltas[2] = int(row[2])
-            deltas[3] = int(row[3])
+            deltas = np.zeros(3)
+            # deltas[0] = int(row[0])
+            # deltas[1] = int(row[1])
+            # deltas[2] = int(row[2])
+            # deltas[3] = int(row[3])
+            deltas[0] = int(row[1])
+            deltas[1] = int(row[2])
+            deltas[2] = int(row[3])
             print(deltas)
 
             vector = np.concatenate((blue_vector, red_vector))
             print(vector)
-            vector = np.append(vector, label)
             vector = np.append(deltas, vector)
+            vector = np.append(vector, label)
             matrix = np.append(matrix, [vector], axis=0)
     print(matrix)
     return matrix
