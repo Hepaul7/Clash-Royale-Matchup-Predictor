@@ -7,7 +7,7 @@ import torch.nn.functional as F
 from learning.matrix_loader import *
 
 NUM_CARDS = 109
-MATRIX_PATH = "../matrix_updated_2.npy"
+MATRIX_PATH = "../matrix_updated.npy"
 MODEL_PATH = "../model.pth"
 
 INTERACTION_MATRIX = load_interaction_matrix()

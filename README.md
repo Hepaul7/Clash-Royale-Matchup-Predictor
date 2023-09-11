@@ -54,13 +54,15 @@ delta_pb, delta_max_win, delta_rank, delta_gt, blue_cards, red_cards, won?
 
 Before, the aim was to see if Deck A beats Deck B, now its shifted more, **can player A beat player B, given their history and deck choices**. Of course, if we input the same stats for players, then we will still be looking at "Can Deck A beat deck B?"
 
+### Feature Inspection:
+Please see the notebook under process_data. There I take a deep look into the data I have collected.
 
 ### Cleaning:
 I did not consider any battles of the player that were not 1v1 pathOfLegend type.
 pathOfLegend is the new "ranked" mode. This is to ensure consistency, where other modes
 player could player for "fun", causing many outliers. 
 
-### Learning (so far, lots more to do as I learn more about ML):
+# Learning:
 I wrote a two layer neural network, with input size 20, then input size 8 to the second layer and then finally and output of size 1. 
 Why neural network? Well, maybe I could use a decision tree or random forests (too many parameters and then decision boundary too complex). But the complexity of decks will probably mean overfitting. I played around a bit and found out Probabilistic models performed very poorly.
 Logistic regression had an accuracy around 60%. There are too many complex patterns that I could not see
@@ -77,9 +79,13 @@ I think it was too complex, so it just kept overfitting, sometimes just predicti
 
 So I think, to predict the outcome of a match, the player must be taken account, hence the new version. 
 ### Simple version
-Through this simple version (small dataset, random hyperparmeters) I achieved a 72.27% accuracy. 
+Through this simple version I achieved a 73.8% accuracy. 
 So far, its not just predicting the same outcome no matter the input, which is good. I shall - tune hyperparameters and think a bit more
-how to improve this further.
+how to improve this further. But note that the ROC-AUC score is quite low, so it doesnt do a good job of seperating + and - classes. I feel like I need a lot more data, as there are 363,792,233,805 possible unique deck combinations. But what I have learnt from this personal project is that this game
+is a lot more complex than I thought it to be.
 
-![sceenshot](Screenshot 2023-09-07 at 23.13.44.png)
+### Why deck prediction might not work
+A few years ago, each month there would be balance changes, now it is every 3 months. This means there might be OP cards for a season and then the next its unplayable. This means my model needs to be updated everytime a new balance update happens.
+
+![](Screenshot 2023-09-10 at 23.22.49.png)
 
