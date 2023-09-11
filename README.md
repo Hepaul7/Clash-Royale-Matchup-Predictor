@@ -1,5 +1,5 @@
 # Clash Royale Matchup Predictor
-NOTE: **THIS PROJECT IS STILL IN PROGRESS**  (basically done, but lots of improvements)
+It's basically done - but lots of improvements to the model could be done
 
 I am making this project on my own, for fun (and because I wasted a lot of time on the game in middle school). 
 
